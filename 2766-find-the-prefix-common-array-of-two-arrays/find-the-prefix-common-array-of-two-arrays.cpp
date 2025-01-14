@@ -4,14 +4,15 @@ public:
         int n=A.size();
         vector<int>result(n,0);
 
-        for(int i=0;i<n;i++){
-            int count=0;
-            for(int j=0;j<=i;j++){
-                for(int b=0;b<=i;b++){
-                    if(A[j]==B[b]) count++;
-                }
-            }
+        vector<bool>a(n+1,false),b(n+1,false);
 
+        for(int i=0;i<n;i++){
+            a[A[i]]=true;
+            b[B[i]]=true;
+            int count=0;
+            for(int j=1;j<n+1;j++){
+                if(a[j]==true && b[j]==true) count++;
+            }
             result[i]=count;
 
         }
