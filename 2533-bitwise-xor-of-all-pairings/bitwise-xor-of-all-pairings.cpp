@@ -1,19 +1,20 @@
 class Solution {
 public:
-    int xorAllNums(vector<int>& num1, vector<int>& num2) {
-        int m=num1.size();
-        int n=num2.size();
-        unordered_map<int,long>mp;
-        for(auto& num:num1){
-            mp[num]+=n;
-        }
-        for(auto&num: num2){
-            mp[num]+=m;
-        }
+    int xorAllNums(vector<int>& nums1, vector<int>& nums2) {
+        int m=nums1.size();
+        int n=nums2.size();
         int result=0;
-        for(auto it:mp){
-            if(it.second%2!=0){
-                result^=it.first;
+        
+        if(m%2!=0){
+            for(auto num:nums2){
+                result^=num;
+            }
+        }
+
+        
+        if(n%2!=0){
+            for(auto num:nums1){
+                result^=num;
             }
         }
 
