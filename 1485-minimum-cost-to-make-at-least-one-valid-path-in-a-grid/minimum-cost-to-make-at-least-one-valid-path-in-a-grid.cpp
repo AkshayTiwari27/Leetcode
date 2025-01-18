@@ -17,6 +17,7 @@ public:
             int i=a[1];
             int j=a[2];
 
+            if(result[i][j]<currCost) continue;
             for(int dir_i=0;dir_i<=3;dir_i++){
                 int i_=i+dir[dir_i][0];
                 int j_=j+dir[dir_i][1];
