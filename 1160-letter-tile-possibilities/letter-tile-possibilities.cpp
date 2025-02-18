@@ -1,27 +1,25 @@
 class Solution {
 public:
-    int numTilePossibilities(string tiles) {
-        unordered_map<char, int> count;
-        for (char tile : tiles) {
-            count[tile]++;
-        }
+    void solve(string tiles, vector<bool>&used, unordered_set<string>&result, string &curr){
+        result.insert(curr);
+        for(int i = 0; i < tiles.size(); i++){
+            if(used[i]) continue;
 
-        return backtrack(count);
+            used[i] = true;
+            curr.push_back(tiles[i]);
+
+            solve(tiles, used, result, curr);
+
+            used[i] = false;
+            curr.pop_back();
+        }
     }
-
-private:
-    int backtrack(unordered_map<char, int>& count) {
-        int result = 0;
-
-        for (auto& entry : count) {
-            if (entry.second > 0) {
-                result++;
-                entry.second--; 
-                result += backtrack(count); 
-                entry.second++; 
-            }
-        }
-
-        return result;
+    int numTilePossibilities(string tiles) {
+        int n = tiles.size();
+        unordered_set<string>result;
+        vector<bool>used(n,false);
+        string curr = "";
+        solve(tiles, used, result, curr);
+        return result.size()-1;
     }
 };
