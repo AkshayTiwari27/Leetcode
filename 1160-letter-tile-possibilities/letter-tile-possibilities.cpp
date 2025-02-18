@@ -1,25 +1,27 @@
 class Solution {
 public:
-    void solve(string tiles, vector<bool>&used, unordered_set<string>&result, string &curr){
-        result.insert(curr);
-        for(int i = 0; i < tiles.size(); i++){
-            if(used[i]) continue;
+    int count;
+    void solve(vector<int>&used){
+        count++;
+        for(int i = 0; i < 26; i++){
+            if(used[i] == 0) continue;
 
-            used[i] = true;
-            curr.push_back(tiles[i]);
+            used[i]--;
 
-            solve(tiles, used, result, curr);
+            solve(used);
 
-            used[i] = false;
-            curr.pop_back();
+            used[i]++;
         }
     }
     int numTilePossibilities(string tiles) {
-        int n = tiles.size();
-        unordered_set<string>result;
-        vector<bool>used(n,false);
-        string curr = "";
-        solve(tiles, used, result, curr);
-        return result.size()-1;
+        count = 0;
+        vector<int>v(26,0);
+
+        for(auto& ch:tiles){
+            v[ch - 'A']++;
+        }
+        solve(v);
+
+        return count-1;
     }
 };
