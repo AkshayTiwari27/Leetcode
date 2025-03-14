@@ -1,26 +1,29 @@
 class Solution {
 public:
-    bool isPossible(int mid, vector<int>& candies, long long k){
-        long long count = 0;
-        for(int i = 0; i < candies.size(); i++){
-            count += candies[i]/mid;
-            if(count >= k) return true;
-        }
-        return count >= k;
-    }
     int maximumCandies(vector<int>& candies, long long k) {
-        int lo = 1;
-        int hi = *max_element(candies.begin(),candies.end());
-        long long count = 0;
-        while(lo <= hi){
-            int mid = lo + (hi - lo)/2;
-            if(isPossible(mid, candies, k)){
-                count = mid;
-                lo = mid + 1;
-            }
-            else hi = mid - 1;
+        int maxCandiesInPile = 0;
+        for (int i = 0; i < candies.size(); i++) {
+            maxCandiesInPile = max(maxCandiesInPile, candies[i]);
         }
+        int left = 0;
+        int right = maxCandiesInPile;
+        while (left < right) {
+            int middle = (left + right + 1) / 2;
+            if (canAllocateCandies(candies, k, middle)) {
+                left = middle;
+            } else {
+                right = middle - 1;
+            }
+        }
+        return left;
+    }
 
-        return count;
+private:
+    bool canAllocateCandies(vector<int>& candies, long long k, int numOfCandies) {
+        long long int maxNumOfChildren = 0;
+        for (int pileIndex = 0; pileIndex < candies.size(); pileIndex++) {
+            maxNumOfChildren += candies[pileIndex] / numOfCandies;
+        }
+        return maxNumOfChildren >= k;
     }
 };
