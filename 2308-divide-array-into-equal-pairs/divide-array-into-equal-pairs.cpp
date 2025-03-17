@@ -1,13 +1,13 @@
 class Solution {
 public:
     bool divideArray(vector<int>& nums) {
-        unordered_map<int,int>mp;
-        for(auto &v: nums){
-            mp[v]++;
+        unordered_set<int>st;
+        for(auto &x: nums){
+            if(st.count(x)){
+                st.erase(x);
+            }else st.insert(x);
         }
-        for(auto &it:mp){
-            if(it.second %2 != 0) return false;
-        }
-        return true;
+
+        return st.empty();
     }
 };
