@@ -1,13 +1,10 @@
 class Solution {
 public:
     bool divideArray(vector<int>& nums) {
-        unordered_set<int>st;
-        for(auto &x: nums){
-            if(st.count(x)){
-                st.erase(x);
-            }else st.insert(x);
+        sort(nums.begin(), nums.end());
+        for(int i = 0; i < nums.size()-1; i += 2){
+            if(nums[i] != nums[i + 1]) return false;
         }
-
-        return st.empty();
+        return true;
     }
 };
