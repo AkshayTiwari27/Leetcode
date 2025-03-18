@@ -6,20 +6,28 @@ public:
     int MOD = 1e9 + 7;
 
     int dp[5001][11];
-    int solve(int n, int i){
-        if(n == 0) return dp[n][i] = 1;
-        int ans = 0;
-        if(dp[n][i] != -1) return dp[n][i];
-        for(auto &v: adj[i]){
-            ans = (ans + solve(n-1, v) )% MOD;
-        }
-        return dp[n][i] = ans;
-    }
+    
     int knightDialer(int n) {
         memset(dp, -1, sizeof(dp));
+
+        for(int cell = 0; cell <= 9; cell++){
+            dp[0][cell] = 1;
+        }
+
+        for(int i = 1; i < n; i++ ){
+            for(int cell = 0; cell <= 9; cell++){
+                int ans = 0;
+                for(auto &v: adj[cell]){
+                    ans = (ans + dp[i-1][v] )% MOD;
+                }
+                dp[i][cell] = ans;
+            }
+        }
+
+
         int result = 0;
         for(int i = 0; i <= 9; i++){
-            result = (result + solve(n-1, i)) % MOD;
+            result = (result + dp[n-1][i]) % MOD;
         }
         return result;
         
