@@ -2,20 +2,23 @@ class Solution {
 public:
     long long MOD = 1e9 + 7;
     int dp[31][1001];
-    int solve(int n, int k, int target){
-        if(target < 0) return  0;
-        if(n == 0 ) return dp[n][target] = (target == 0);
+    
+    int numRollsToTarget(int n, int a, int target) {
+        memset(dp, 0, sizeof(dp));
+        dp[0][0] = 1;
 
-        if(dp[n][target] != -1) return dp[n][target];
-        int ways = 0;
-        for(int i = 1; i <= k; i++){
-            ways = (ways + solve(n-1, k, target - i)) % MOD;
+        for(int j = 1; j <= n; j++){
+            for(int k = 1; k <= target; k++){
+                int ways = 0;
+                for(int i = 1; i <= a; i++){
+                    if(k>=i)
+                        ways = (ways + dp[j-1][k - i]) % MOD;
+                }
+
+               dp[j][k] = ways;
+            }
         }
 
-        return dp[n][target] = ways;
-    }
-    int numRollsToTarget(int n, int k, int target) {
-        memset(dp, -1, sizeof(dp));
-        return solve(n,k,target);
+        return dp[n][target];
     }
 };
