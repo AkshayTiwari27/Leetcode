@@ -1,11 +1,13 @@
 class Solution {
 public:
-    int subsetXORSum(vector<int>& nums) {
-        int result = 0;
-        for(int i = 0; i< nums.size(); i++){
-            result|= nums[i];
-        }
+    int solve(vector<int>& nums, int i, int result){
+        if(i == nums.size()) return result;
 
-        return result << (nums.size()-1);
+        int include = solve(nums, i+1, nums[i]^result);
+        int exclude = solve(nums, i+1, result);
+        return include+exclude;
+    }
+    int subsetXORSum(vector<int>& nums) {
+        return solve(nums, 0, 0);
     }
 };
