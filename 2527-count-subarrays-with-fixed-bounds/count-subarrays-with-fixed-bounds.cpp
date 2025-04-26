@@ -18,7 +18,6 @@ public:
             if (nums[i] == maxK) {
                 lastMax = i;
             }
-            // Count new subarrays ending at i
             ans += std::max(0, std::min(lastMin, lastMax) - lastBad);
         }
         
