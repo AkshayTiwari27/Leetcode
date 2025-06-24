@@ -4,8 +4,10 @@ public:
         set<int>st;
         int n = nums.size();
         for(int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++){
-                if(nums[j] == key && abs(i - j) <= k) st.insert(i);
+            if(nums[i] == key){
+                for(int j = max(0, i - k); j <= min(i + k, n-1); j++){
+                    st.insert(j);
+                }
             }
         }
 
