@@ -1,19 +1,14 @@
 class Solution {
 public:
-    
+    int dp[101];
+    int solve(int i, vector<int>& nums){
+        if(i >= nums.size()) return 0;
+        if(dp[i] != -1) return dp[i];
+
+        return dp[i] = max((nums[i] + solve(i+2, nums)), solve(i+1, nums));
+    }
     int rob(vector<int>& nums) {
-        int n = nums.size();
-        vector<int>dp(n+1);
-        dp[0] = 0;
-        
-        dp[1] = nums[0];
-        for(int i = 2; i<=n; i++){
-            int take = nums[i-1] + dp[i-2];
-            int not_take = dp[i-1];
-
-            dp[i] = max(take, not_take);
-        }
-
-        return dp[n];
+        memset(dp, -1, sizeof(dp));
+        return solve(0, nums);
     }
 };
