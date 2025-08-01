@@ -14,28 +14,28 @@ public:
     map<pair<int,int>, vector<TreeNode*>>mp;
     vector<TreeNode*> solve(int start, int end){
         if(start > end) return {NULL};
-
         if(start == end){
             TreeNode* root = new TreeNode(start);
-            return mp[{start, end}] ={root};
+            return mp[{start, end}] = {root};
         }
 
         if(mp.count({start,end})) return mp[{start, end}];
 
         vector<TreeNode*>result;
-        for(int i = start; i <= end; i++){
-            vector<TreeNode*>left_tree = solve(start, i-1);
-            vector<TreeNode*>right_tree = solve(i+1, end);
+        for(int i = start; i<= end; i++){
+            vector<TreeNode*>leftBst = solve(start, i-1);
+            vector<TreeNode*>rightBst = solve(i+1, end);
 
-            for(auto l: left_tree){
-                for(auto r: right_tree){
+            for(auto leftroot: leftBst){
+                for(auto rightroot : rightBst){
                     TreeNode* root = new TreeNode(i);
-                    root->left = l;
-                    root->right = r;
+                    root->left = leftroot;
+                    root->right = rightroot;
                     result.push_back(root);
                 }
             }
         }
+
         return mp[{start, end}] = result;
     }
     vector<TreeNode*> generateTrees(int n) {
