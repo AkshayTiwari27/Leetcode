@@ -1,23 +1,20 @@
 class Solution {
 public:
     int dp[101];
-   
+    int solve(int i, string &s){
+        if(i == s.length()) return 1;
+        if(s[i] == '0') return 0;
+
+        if(dp[i] != -1) return dp[i];
+
+        int result = solve(i+1, s);
+        if(i+1< s.length() && (s[i] == '1' || (s[i] == '2' && s[i+1] <= '6')))
+        result += solve(i+2, s);
+
+        return dp[i] = result;
+    }
     int numDecodings(string s) {
-        memset(dp, 0, sizeof(dp));
-        int n = s.length();
-        dp[n] = 1;
-        for(int i = n-1; i>= 0; i--){
-            if(s[i] == '0') dp[i] = 0;
-            else{
-                int result = dp[i+1];
-                if(i + 1 < n && (s[i] == '1' || (s[i] == '2' && s[i + 1] <= '6')))
-                result += dp[i+2];
-
-                dp[i] = result;
-            }
-        }
-
-        return dp[0];
-        
+        memset(dp, -1, sizeof(dp));
+        return solve(0, s);
     }
 };
