@@ -1,7 +1,7 @@
 class Solution {
 public:
     int M = 1e9 + 7;
-
+    
     int kInversePairs(int n, int k) {
         vector<vector<int>>dp(n+1, vector<int>(k+1, 0));
 
@@ -9,12 +9,14 @@ public:
             dp[i][0] = 1;
         }
 
-        for(int i = 1; i<= n; i++){
-            long long curr = 1;
+        for(int i = 1; i<=n; i++){
             for(int j = 1; j<=k; j++){
-                curr += dp[i-1][j];
-                if(j >= i) curr -= dp[i-1][j-i];
-                dp[i][j] = curr % M;
+                long long result = 0;
+                for(int inv = 0; inv <= min(i-1, j); inv++){
+                    result = (result + dp[i-1][j-inv]) % M;
+                }
+
+                dp[i][j] = result % M;
             }
         }
 
