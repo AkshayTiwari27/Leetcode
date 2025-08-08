@@ -10,12 +10,11 @@ public:
         }
 
         for(int i = 1; i<= n; i++){
+            long long curr = 1;
             for(int j = 1; j<=k; j++){
-                int result = 0;
-                for(int inv = 0; inv <= min(j, i-1); inv++){
-                    result = (result + dp[i-1][j - inv])%M;
-                }
-                dp[i][j] = result;
+                curr += dp[i-1][j];
+                if(j >= i) curr -= dp[i-1][j-i];
+                dp[i][j] = curr % M;
             }
         }
 
