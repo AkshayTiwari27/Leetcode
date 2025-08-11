@@ -1,26 +1,28 @@
 class Solution {
 public:
-    int dp[51][51][51];
     int M = 1e9 + 7;
-    vector<vector<int>>directions = {{-1,0}, {0, -1}, {1, 0}, {0, 1}};
-    int solve(int m, int n, int maxMove, int i, int j){
-        if(i < 0 || i>=m || j<0 || j>= n) return 1;
-
-        if(dp[i][j][maxMove] != -1) return dp[i][j][maxMove];
-
-        if(maxMove == 0) return 0;
-        int result = 0;
-        for(auto &dir : directions){
-            int nr = i+ dir[0];
-            int nc = j + dir[1];
-
-            result = ( result + solve(m, n, maxMove-1, nr, nc)) % M;
-        }
-        return dp[i][j][maxMove] = result;
-
-    }
+    vector<vector<int>> directions = {{-1,0}, {0,-1}, {1,0}, {0,1}};
+    
     int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
-        memset(dp, -1, sizeof(dp));
-        return solve(m, n, maxMove, startRow, startColumn);
+        vector<vector<vector<int>>> dp(m, vector<vector<int>>(n, vector<int>(maxMove + 1, 0)));
+
+        for (int k = 1; k <= maxMove; k++) {
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    for (auto &dir : directions) {
+                        int nr = i + dir[0];
+                        int nc = j + dir[1];
+                        
+                        if (nr < 0 || nc < 0 || nr >= m || nc >= n) {
+                            dp[i][j][k] = (dp[i][j][k] + 1) % M;
+                        } else {
+                            dp[i][j][k] = (dp[i][j][k] + dp[nr][nc][k-1]) % M;
+                        }
+                    }
+                }
+            }
+        }
+
+        return dp[startRow][startColumn][maxMove];
     }
 };
